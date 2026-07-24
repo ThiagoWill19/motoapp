@@ -1,0 +1,48 @@
+package com.will.motoapp.controller.external;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.will.motoapp.models.dto.user.CreateUserDto;
+import com.will.motoapp.service.UserService;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.web.bind.annotation.PostMapping;
+
+
+
+@Controller
+@RequestMapping("/create-account")
+@RequiredArgsConstructor
+public class NewAccountController {
+
+    private final UserService userService;
+
+    @GetMapping
+    public String showCreateAccountForm(Model model) {
+        model.addAttribute("createUserDto", new CreateUserDto());
+        return "public/createAccount";
+    }
+
+    @PostMapping
+    public String createAccount(@Valid CreateUserDto createUserDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return "redirect:/login?registrationError=true";
+        }
+
+        try {
+            userService.create(createUserDto);
+        } catch (Exception e) {
+            return "redirect:/login?registrationError=true";
+        }
+
+        return "redirect:/login?success=true";
+    }
+    
+    
+}
