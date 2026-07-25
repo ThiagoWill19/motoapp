@@ -21,6 +21,8 @@ public class UserService {
     @Transactional
     public void create(CreateUserDto createUserDto) {
 
+        validateUniquenessEmail(createUserDto.getEmail());
+
         createUserDto.setPassword(createUserDto.getPassword().trim());
         createUserDto.setConfirmPassword(createUserDto.getConfirmPassword().trim());
 
@@ -39,5 +41,11 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
+    }
+
+    public void validateUniquenessEmail(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("Email já cadastrado");
+        }
     }
 }

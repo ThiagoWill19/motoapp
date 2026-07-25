@@ -106,7 +106,8 @@
         </div>
 
         <div th:if="${param.registrationError}" class="alert alert-danger alert-dismissible fade show py-2 mb-3 text-center" role="alert" style="font-size: 0.85rem;">
-            Nao foi possivel concluir o cadastro. Verifique os dados e tente novamente.
+            Nao foi possivel concluir o cadastro.
+            <span th:text="${param.errorMessage}"></span>
             <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
